@@ -15,12 +15,12 @@ class Settings(BaseSettings):
     api_reload: bool = Field(default=False, alias="API_RELOAD")
     
     # Supabase
-    supabase_url: str = Field(..., alias="SUPABASE_URL")
-    supabase_key: str = Field(..., alias="SUPABASE_KEY")
-    supabase_service_key: str = Field(..., alias="SUPABASE_SERVICE_KEY")
+    supabase_url: str = Field(default="", alias="SUPABASE_URL")
+    supabase_key: str = Field(default="", alias="SUPABASE_KEY")
+    supabase_service_key: str = Field(default="", alias="SUPABASE_SERVICE_KEY")
     
     # Security
-    secret_key: str = Field(..., alias="SECRET_KEY")
+    secret_key: str = Field(default="change-this-secret-key-in-production", alias="SECRET_KEY")
     algorithm: str = Field(default="HS256", alias="ALGORITHM")
     access_token_expire_minutes: int = Field(default=30, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
     
