@@ -5,7 +5,6 @@ import {
   Zap, 
   Activity, 
   BarChart3, 
-  CheckCircle, 
   ArrowRight,
   Github,
   Code,

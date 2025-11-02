@@ -50,7 +50,7 @@ interface Evaluation {
 const EnhancedMonitor: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedEval, setSelectedEval] = useState<Evaluation | null>(null);
   const [timeRange, setTimeRange] = useState(7);
@@ -131,6 +131,7 @@ const EnhancedMonitor: React.FC = () => {
 
   useEffect(() => {
     fetchMonitoringData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange]);
 
   const fetchMonitoringData = async () => {

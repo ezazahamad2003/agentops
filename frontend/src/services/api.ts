@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ApiKey, Evaluation, EvaluationStats } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agentops-api-1081133763032.us-central1.run.app';
 

@@ -6,7 +6,6 @@ import {
   Zap, 
   Clock,
   CheckCircle,
-  XCircle,
   BarChart3,
   ArrowRight,
   Sparkles
@@ -18,7 +17,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 const EnhancedDashboard: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
