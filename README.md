@@ -76,6 +76,7 @@ If you want to contribute or modify the code:
 git clone https://github.com/ezazahamad2003/agentops.git
 cd agentops
 pip install -e .
+```
 
 ## 🚀 Quick Start
 
