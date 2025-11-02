@@ -1,4 +1,4 @@
-# Production Dockerfile for GCP Cloud Run
+# Production Dockerfile for GCP Cloud Run with Full Backend
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -8,14 +8,13 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (for layer caching)
-COPY requirements-minimal.txt .
+# Copy requirements
+COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements-minimal.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY minimal_main.py .
-COPY database/schema_minimal.sql ./database/
+COPY . .
 
 # Create non-root user for security
 RUN useradd -m -u 1000 agentops && \
@@ -23,13 +22,9 @@ RUN useradd -m -u 1000 agentops && \
 
 USER agentops
 
-# Cloud Run will set PORT automatically
+# Cloud Run will set PORT automatically (defaults to 8080)
+ENV PORT=8080
 EXPOSE 8080
 
-# Health check (Cloud Run compatible)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import httpx; httpx.get('http://localhost:8080/health', timeout=5)"
-
-# Run with Python (uses PORT from environment)
-CMD ["python", "minimal_main.py"]
-
+# Run with uvicorn, reading PORT from environment
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT

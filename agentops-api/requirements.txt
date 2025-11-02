@@ -1,9 +1,11 @@
-# Minimal dependencies for AgentOps API MVP (updated for Python 3.11 compatibility)
+# Dependencies for AgentOps API (Python 3.11)
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
-supabase>=2.23.0
+supabase>=2.3.0
 python-dotenv==1.0.0
-pydantic>=2.11.0
-httpx>=0.28.0
-websockets>=15.0
+pydantic>=2.5.0
+httpx>=0.25.0
+websockets>=12.0
+loguru>=0.7.2
+pydantic-settings>=2.0.0
 
