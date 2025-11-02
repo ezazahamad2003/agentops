@@ -8,7 +8,8 @@ import {
   CheckCircle,
   BarChart3,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  RefreshCw
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import apiService from '../services/api';
@@ -58,10 +59,17 @@ const EnhancedDashboard: React.FC = () => {
             <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
-            <div>
+            <div className="flex-1">
               <h1 className="text-3xl font-bold text-white">Welcome to AgentOps</h1>
               <p className="text-agentops-100">Monitor your AI agents in real-time</p>
             </div>
+            <button
+              onClick={fetchDashboardData}
+              className="p-3 bg-white/10 hover:bg-white/20 rounded-xl backdrop-blur-sm transition-colors"
+              title="Refresh data"
+            >
+              <RefreshCw className="w-5 h-5 text-white" />
+            </button>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
