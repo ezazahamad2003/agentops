@@ -8,6 +8,11 @@ include SDK_GUIDE.md
 # Include package data
 recursive-include agentops *.py
 
+# Exclude backend and frontend
+exclude agentops-api/*
+exclude agentops-dashboard/*
+exclude test-folder/*
+
 # Exclude unnecessary files
 global-exclude __pycache__
 global-exclude *.py[co]

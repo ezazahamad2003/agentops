@@ -2,6 +2,26 @@
 
 All notable changes to the AgentOps SDK project.
 
+## [v0.2.2] - 2025-11-02 - Clean SDK Package 📦
+
+### Fixed
+- **Package Structure**: SDK package now excludes backend and frontend files
+- **Build Configuration**: Updated `setup.py` to only include `agentops` package
+- **MANIFEST.in**: Added explicit excludes for `agentops-api` and `agentops-dashboard`
+- **pyproject.toml**: Added proper package exclusions
+
+### Changed
+- Package now only contains SDK files (`__init__.py`, `client.py`, `detector_flexible.py`)
+- Reduced package size by excluding unnecessary backend code
+- Cleaner distribution for PyPI
+
+### Technical Details
+- Updated `packages=["agentops"]` in setup.py (was `find_packages()`)
+- Added exclusions in pyproject.toml for backend/frontend directories
+- Verified wheel contents - only SDK files included ✅
+
+---
+
 ## [v0.2.1] - 2025-11-02 - Production Backend Integration 🚀
 
 ### Added

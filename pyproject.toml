@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentops-client"
-version = "0.2.1"
+version = "0.2.2"
 description = "AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -31,6 +31,8 @@ dependencies = [
     "openai>=1.12.0",
     "python-dotenv>=1.0.0",
     "numpy>=1.24.0",
+    "httpx>=0.26.0",
+    "loguru>=0.7.2",
 ]
 
 [project.optional-dependencies]
@@ -47,5 +49,6 @@ Documentation = "https://github.com/ezazahamad2003/agentops#readme"
 "Source Code" = "https://github.com/ezazahamad2003/agentops"
 
 [tool.setuptools.packages.find]
-include = ["agentops*"]
+include = ["agentops"]
+exclude = ["agentops-api*", "agentops-dashboard*", "test-folder*", "tests*", "examples*"]
 

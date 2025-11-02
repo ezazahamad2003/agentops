@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="agentops-client",
-    version="0.2.1",
+    version="0.2.2",
     author="Ezaz Ahmad",
     author_email="ezazahamad2003@gmail.com",
     description="AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput",
@@ -24,7 +24,7 @@ setup(
         "Source Code": "https://github.com/ezazahamad2003/agentops",
     },
     license="MIT",
-    packages=find_packages(),
+    packages=["agentops"],  # Only include SDK package, exclude backend/frontend
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
