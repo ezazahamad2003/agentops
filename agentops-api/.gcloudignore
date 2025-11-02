@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+tests/
+test_*.py
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation
+README.md
+DEPLOY.md
+QUICKSTART.md
+docs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+
+# Build artifacts
+build/
+dist/
+*.egg-info
+
+# Full backend (we're deploying minimal)
+app/
+main.py
+requirements.txt
+docker-compose.yml
+
+# Logs
+*.log
+logs/
+
