@@ -98,6 +98,36 @@ print(f"Hallucinated: {result['hallucinated']}")
 print(f"Latency: {result['latency_sec']}s")
 ```
 
+### 🌐 Production Backend (NEW in v0.2.1)
+
+Connect to our production backend for automatic metrics storage and analytics:
+
+```python
+from agentops import AgentOps
+
+# Initialize with production backend
+ops = AgentOps(
+    api_key="your_api_key",  # Get from /register endpoint
+    api_url="https://agentops-api-1081133763032.us-central1.run.app"
+)
+
+# Evaluations are automatically uploaded to backend
+result = ops.evaluate(
+    prompt="What is AI?",
+    response="AI is artificial intelligence...",
+    model_name="gpt-4o-mini"
+)
+
+# Data is stored in Supabase for analytics! ✅
+```
+
+**Get Your API Key:**
+```bash
+curl -X POST https://agentops-api-1081133763032.us-central1.run.app/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"my_agent"}'
+```
+
 ### RAG Mode with Retrieved Documents
 
 ```python

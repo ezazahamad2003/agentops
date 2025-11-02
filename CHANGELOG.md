@@ -2,6 +2,56 @@
 
 All notable changes to the AgentOps SDK project.
 
+## [v0.2.1] - 2025-11-02 - Production Backend Integration 🚀
+
+### Added
+- 🌐 **Production Backend**: GCP Cloud Run deployment at https://agentops-api-1081133763032.us-central1.run.app
+- 🔐 **API Key Authentication**: Secure agent registration and metrics upload
+- 📊 **Automatic Upload**: SDK auto-uploads evaluations to backend when configured
+- 💾 **Supabase Storage**: All metrics stored in PostgreSQL database
+- 📈 **Analytics API**: `/stats/{agent_id}` endpoint for aggregated metrics
+- 🧪 **Comprehensive Testing**: 5 production tests validating end-to-end flow
+- 📚 **Production Examples**: Updated README with production URL and usage
+
+### Changed
+- SDK `AgentOps` class now accepts `api_key` and `api_url` parameters
+- Added `model_name`, `agent_name`, and `session_id` metadata to evaluations
+- Updated `client.py` with HTTP client (httpx) and logging (loguru)
+- Added `/register` and `/metrics` endpoints for agent management
+
+### Fixed
+- API endpoint corrected from `/evaluations/` to `/metrics`
+- Production environment variable handling in backend
+- Docker container port configuration for Cloud Run
+
+### Technical Details
+- Backend: FastAPI on GCP Cloud Run with Supabase
+- Authentication: API key-based with secure storage
+- Metrics: Real-time upload with graceful fallback
+- All 5 production tests passing ✅
+
+### Breaking Changes
+None - backward compatible with v0.2.0
+
+---
+
+## [v0.2.0] - 2025-11-02 - PyPI Publication & SDK Release
+
+### Added
+- 📦 **PyPI Publication**: Package published as `agentops-client`
+- 🎁 **AgentOps SDK**: High-level wrapper for easy integration
+- 🔄 **Session Management**: Context manager support
+- 📝 **Comprehensive Documentation**: README, SDK_GUIDE, PYPI_PUBLISH_GUIDE
+- 🧪 **25 Tests**: Complete test coverage
+- 🚀 **Launch Materials**: Social posts, blog templates, checklists
+
+### Changed
+- Reorganized as monorepo structure
+- Updated all badges and links
+- Enhanced README with examples
+
+---
+
 ## [Phase 2] - 2025-11-02 - Reliability Metrics
 
 ### Added

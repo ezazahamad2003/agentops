@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="agentops-client",
-    version="0.2.0",
+    version="0.2.1",
     author="Ezaz Ahmad",
     author_email="ezazahamad2003@gmail.com",
     description="AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput",
