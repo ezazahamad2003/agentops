@@ -44,6 +44,8 @@ setup(
         "openai>=1.12.0",
         "python-dotenv>=1.0.0",
         "numpy>=1.24.0",
+        "httpx>=0.26.0",
+        "loguru>=0.7.2",
     ],
     extras_require={
         "dev": [
