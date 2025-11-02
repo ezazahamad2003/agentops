@@ -50,5 +50,5 @@ Documentation = "https://github.com/ezazahamad2003/agentops#readme"
 
 [tool.setuptools.packages.find]
 include = ["agentops"]
-exclude = ["agentops-api*", "agentops-dashboard*", "test-folder*", "tests*", "examples*"]
+exclude = ["agentops-api*", "agentops-dashboard*", "integration-tests*", "tests*", "examples*"]
 

@@ -25,8 +25,8 @@ This folder contains comprehensive tests for the AgentOps SDK with local API int
 ### **Step 1: Run the Test Script**
 
 ```powershell
-# From the test-folder directory
-cd test-folder
+# From the integration-tests directory
+cd integration-tests
 python test_agent.py
 ```
 

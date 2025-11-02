@@ -11,7 +11,7 @@ recursive-include agentops *.py
 # Exclude backend and frontend
 exclude agentops-api/*
 exclude agentops-dashboard/*
-exclude test-folder/*
+exclude integration-tests/*
 
 # Exclude unnecessary files
 global-exclude __pycache__

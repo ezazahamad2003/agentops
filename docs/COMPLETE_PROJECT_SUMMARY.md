@@ -34,7 +34,7 @@
 ### ✅ **Phase 5: Monorepo Structure** (1 hour)
 - **SDK**: `agentops/` (Python package)
 - **Backend**: `agentops-api/` (FastAPI)
-- **Tests**: `test-folder/` (Integration tests)
+- **Tests**: `integration-tests/` (Integration tests)
 - **Documentation**: Comprehensive guides
 
 ### ✅ **Phase 6: Production Backend** (2 hours)
@@ -151,7 +151,7 @@ gentops/
 │   ├── Dockerfile
 │   └── deploy.sh
 │
-├── test-folder/                # 🧪 Integration Tests
+├── integration-tests/          # 🧪 Integration Tests
 │   ├── test_production.py      # End-to-end tests
 │   └── verify_database.sql     # DB verification
 │

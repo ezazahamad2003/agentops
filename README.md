@@ -430,6 +430,15 @@ Low-level detection function with reliability metrics.
 
 MIT License - feel free to use in your projects!
 
+## 📚 Documentation
+
+For comprehensive guides and additional documentation, see the [`docs/`](./docs/) directory:
+
+- **[SDK Guide](./docs/SDK_GUIDE.md)** - Complete SDK integration guide
+- **[PyPI Publishing Guide](./docs/PYPI_PUBLISH_GUIDE.md)** - Publishing guide
+- **[Project Summary](./docs/COMPLETE_PROJECT_SUMMARY.md)** - Full project overview
+- **[Changelog](./CHANGELOG.md)** - Version history and updates
+
 ## 🤝 Contributing
 
 Contributions welcome! Please test your changes with the test suite before submitting.
