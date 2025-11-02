@@ -11,7 +11,7 @@ import sys
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.routes import evaluations, auth, health
+from app.routes import evaluations, auth, health, api_keys
 
 
 # Configure logging
@@ -79,6 +79,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Include routers
 app.include_router(health.router)
 app.include_router(auth.router)
+app.include_router(api_keys.router)
 app.include_router(evaluations.router)
 
 

@@ -60,10 +60,8 @@ const EnhancedApiKeys: React.FC = () => {
       setCreating(true);
       const newKey = await apiService.createApiKeys(newKeyName);
       
-      // Save to state and localStorage
-      const updatedKeys = [...apiKeys, newKey];
-      setApiKeys(updatedKeys);
-      localStorage.setItem('agentops_api_keys', JSON.stringify(updatedKeys));
+      // Update state - database handles persistence
+      setApiKeys([...apiKeys, newKey]);
       
       setNewKeyName('');
       setNewlyCreatedKey(newKey.key);
@@ -83,10 +81,8 @@ const EnhancedApiKeys: React.FC = () => {
     try {
       await apiService.deleteApiKey(keyId);
       
-      // Update state and localStorage
-      const updatedKeys = apiKeys.filter(k => k.id !== keyId);
-      setApiKeys(updatedKeys);
-      localStorage.setItem('agentops_api_keys', JSON.stringify(updatedKeys));
+      // Update state - database handles persistence
+      setApiKeys(apiKeys.filter(k => k.id !== keyId));
     } catch (error) {
       console.error('Failed to delete API key:', error);
     }

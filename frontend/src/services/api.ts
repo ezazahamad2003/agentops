@@ -40,36 +40,32 @@ export const apiService = {
     return response.data;
   },
 
-  // API Keys - Using minimal backend's register endpoint
+  // API Keys - Using proper database-backed endpoints
   async createApiKeys(name: string) {
-    // Minimal backend: register creates an agent and returns api_key
-    const response = await apiClient.post('/register', { 
-      name,
-      metadata: { created_from: 'frontend', user: localStorage.getItem('agentops_user') }
-    });
-    
-    // Transform response to match expected format
+    const response = await apiClient.post('/api-keys/', { name });
     return {
-      id: response.data.agent_id,
-      name: name,
-      key: response.data.api_key,
-      created_at: new Date().toISOString(),
-      is_active: true
+      id: response.data.id,
+      name: response.data.name,
+      key: response.data.key,
+      created_at: response.data.created_at,
+      is_active: response.data.active
     };
   },
 
   async getApiKeys() {
-    // Minimal backend doesn't have list endpoint
-    // Return stored keys from localStorage
-    const storedKeys = localStorage.getItem('agentops_api_keys');
-    return storedKeys ? JSON.parse(storedKeys) : [];
+    const response = await apiClient.get('/api-keys/');
+    return response.data.map((key: any) => ({
+      id: key.id,
+      name: key.name,
+      key: key.key_preview, // Backend returns masked key
+      created_at: key.created_at,
+      last_used: key.last_used_at,
+      is_active: key.active
+    }));
   },
 
   async deleteApiKey(keyId: string) {
-    const token = localStorage.getItem('agentops_token');
-    const response = await apiClient.delete(`/auth/api-keys/${keyId}`,
-      { headers: { 'Authorization': `Bearer ${token}` } }
-    );
+    const response = await apiClient.delete(`/api-keys/${keyId}`);
     return response.data;
   },
 
