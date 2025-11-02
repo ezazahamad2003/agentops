@@ -50,6 +50,12 @@ class AgentOps:
         self.track_throughput = track_throughput
         self._session_active = False
     
+    @staticmethod
+    def version():
+        """Return the AgentOps SDK version."""
+        from . import __version__
+        return __version__
+    
     def evaluate(self, prompt, response, retrieved_docs=None):
         """
         Evaluate an agent's response for hallucination and reliability metrics.
