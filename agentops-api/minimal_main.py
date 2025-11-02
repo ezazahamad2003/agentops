@@ -267,10 +267,11 @@ async def get_agent_stats(
 
 
 if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8080))  # Cloud Run default
     uvicorn.run(
         "minimal_main:app",
         host="0.0.0.0",
-        port=int(os.getenv("PORT", 8000)),
-        reload=True
+        port=port,
+        reload=False  # Production mode
     )
 

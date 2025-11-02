@@ -1,7 +1,5 @@
-# Multi-stage Dockerfile for AgentOps API
-
-# Stage 1: Base
-FROM python:3.11-slim as base
+# Production Dockerfile for GCP Cloud Run
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -10,36 +8,28 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Stage 2: Dependencies
-FROM base as dependencies
-
-# Copy requirements
-COPY requirements.txt .
-
-# Install Python dependencies
+# Copy requirements first (for layer caching)
+COPY requirements-minimal.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
-# Stage 3: Application
-FROM dependencies as application
+    pip install --no-cache-dir -r requirements-minimal.txt
 
 # Copy application code
-COPY app/ ./app/
-COPY main.py .
+COPY minimal_main.py .
+COPY database/schema_minimal.sql ./database/
 
-# Create non-root user
+# Create non-root user for security
 RUN useradd -m -u 1000 agentops && \
     chown -R agentops:agentops /app
 
 USER agentops
 
-# Expose port
-EXPOSE 8000
+# Cloud Run will set PORT automatically
+EXPOSE 8080
 
-# Health check
+# Health check (Cloud Run compatible)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import httpx; httpx.get('http://localhost:8000/health')"
+    CMD python -c "import httpx; httpx.get('http://localhost:8080/health', timeout=5)"
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run with Python (uses PORT from environment)
+CMD ["python", "minimal_main.py"]
 
