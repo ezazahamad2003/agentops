@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agentops"
+name = "agentops-client"
 version = "0.2.0"
 description = "AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput"
 readme = "README.md"

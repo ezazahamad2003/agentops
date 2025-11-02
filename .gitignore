@@ -52,6 +52,10 @@ htmlcov/
 .env.local
 .env.*.local
 
+# PyPI credentials (NEVER commit this!)
+.pypirc
+**/.pypirc
+
 # OS
 .DS_Store
 .DS_Store?

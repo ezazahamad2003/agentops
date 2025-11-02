@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="agentops",
+    name="agentops-client",
     version="0.2.0",
     author="Ezaz Ahmad",
     author_email="ezazahamad2003@gmail.com",
