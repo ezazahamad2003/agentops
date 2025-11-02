@@ -1,6 +1,11 @@
-﻿# 🧠 Dual-Mode Hallucination Detector with Reliability Metrics
+﻿# 🧠 AgentOps Client - AI Reliability Engineering for LLM Agents
 
-A flexible hallucination detection system for LLM responses that works both **with** and **without** RAG (Retrieval Augmented Generation). Now includes **AI reliability engineering metrics** for full observability.
+[![PyPI version](https://badge.fury.io/py/agentops-client.svg)](https://pypi.org/project/agentops-client/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://static.pepy.tech/badge/agentops-client)](https://pepy.tech/project/agentops-client)
+
+A flexible hallucination detection system for LLM responses that works both **with** and **without** RAG (Retrieval Augmented Generation). Monitor **truth quality**, **latency**, and **throughput** for production LLM systems.
 
 ## 🎯 Features
 
@@ -41,30 +46,36 @@ Weighted Fusion (0.4 factual + 0.4 drift + 0.2 uncertainty)
 
 ## 📦 Installation
 
-### Option 1: Install as Package (Recommended)
+### Quick Install from PyPI
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/agentops.git
-cd agentops
-
-# Install in development mode
-pip install -e .
+pip install agentops-client
 ```
 
-### Option 2: Install Dependencies Only
-
-```bash
-pip install -r requirements.txt
-```
+That's it! You're ready to start monitoring your LLM agents.
 
 ### Environment Setup
 
-Create a `.env` file in the project root:
+Create a `.env` file or set environment variable:
 
+```bash
+export OPENAI_API_KEY=your_openai_api_key_here
 ```
-OPENAI_API_KEY=your_openai_api_key_here
+
+Or in Python:
+```python
+import os
+os.environ['OPENAI_API_KEY'] = 'your_openai_api_key_here'
 ```
+
+### Development Installation
+
+If you want to contribute or modify the code:
+
+```bash
+git clone https://github.com/ezazahamad2003/agentops.git
+cd agentops
+pip install -e .
 
 ## 🚀 Quick Start
 
