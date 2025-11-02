@@ -12,11 +12,18 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="agentops",
     version="0.2.0",
-    author="AgentOps",
+    author="Ezaz Ahmad",
+    author_email="ezazahamad2003@gmail.com",
     description="AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/agentops",
+    url="https://github.com/ezazahamad2003/agentops",
+    project_urls={
+        "Bug Tracker": "https://github.com/ezazahamad2003/agentops/issues",
+        "Documentation": "https://github.com/ezazahamad2003/agentops#readme",
+        "Source Code": "https://github.com/ezazahamad2003/agentops",
+    },
+    license="MIT",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -45,10 +52,6 @@ setup(
             "flake8>=6.0.0",
         ],
     },
-    entry_points={
-        "console_scripts": [
-            "agentops=agentops.cli:main",
-        ],
-    },
+    keywords=["llm", "ai", "monitoring", "hallucination", "observability", "agents", "reliability"],
 )
 

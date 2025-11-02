@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentops"
+version = "0.2.0"
+description = "AI Reliability Engineering for LLM Agents - Monitor hallucinations, latency, and throughput"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Ezaz Ahmad", email = "ezazahamad2003@gmail.com"}
+]
+keywords = ["llm", "ai", "monitoring", "hallucination", "observability", "agents", "reliability"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "openai>=1.12.0",
+    "python-dotenv>=1.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ezazahamad2003/agentops"
+"Bug Tracker" = "https://github.com/ezazahamad2003/agentops/issues"
+Documentation = "https://github.com/ezazahamad2003/agentops#readme"
+"Source Code" = "https://github.com/ezazahamad2003/agentops"
+
+[tool.setuptools.packages.find]
+include = ["agentops*"]
+
