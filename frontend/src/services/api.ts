@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agentops-api-1081133763032.us-central1.run.app';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 });
 
-// Add auth token to requests
+// Add JWT auth token to requests
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('agentops_token');
   if (token) {
@@ -19,9 +19,12 @@ apiClient.interceptors.request.use((config) => {
 });
 
 export const apiService = {
-  // Authentication
+  // Authentication - Full backend
   async login(email: string, password: string) {
     const response = await apiClient.post('/auth/login', { email, password });
+    if (response.data.access_token) {
+      localStorage.setItem('agentops_token', response.data.access_token);
+    }
     return response.data;
   },
 
@@ -34,42 +37,46 @@ export const apiService = {
     return response.data;
   },
 
-  // Agent Registration (Minimal backend - no auth required)
-  async registerAgent(name: string, metadata?: any) {
-    const response = await apiClient.post('/register', { name, metadata });
+  async getCurrentUser() {
+    const response = await apiClient.get('/auth/me');
     return response.data;
   },
 
-  // API Keys - Using proper database-backed endpoints
+  async logout() {
+    localStorage.removeItem('agentops_token');
+    localStorage.removeItem('agentops_user');
+  },
+
+  // API Keys - Full backend with JWT authentication
   async createApiKeys(name: string) {
-    const response = await apiClient.post('/api-keys/', { name });
+    const response = await apiClient.post('/auth/api-keys', { name });
     return {
       id: response.data.id,
       name: response.data.name,
       key: response.data.key,
       created_at: response.data.created_at,
-      is_active: response.data.active
+      is_active: response.data.is_active
     };
   },
 
   async getApiKeys() {
-    const response = await apiClient.get('/api-keys/');
+    const response = await apiClient.get('/auth/api-keys');
     return response.data.map((key: any) => ({
       id: key.id,
       name: key.name,
-      key: key.key_preview, // Backend returns masked key
+      key: key.key_preview || key.key,
       created_at: key.created_at,
-      last_used: key.last_used_at,
-      is_active: key.active
+      last_used_at: key.last_used_at,
+      is_active: key.is_active
     }));
   },
 
   async deleteApiKey(keyId: string) {
-    const response = await apiClient.delete(`/api-keys/${keyId}`);
+    const response = await apiClient.delete(`/auth/api-keys/${keyId}`);
     return response.data;
   },
 
-  // Evaluations - Minimal backend uses /stats/{agent_id}
+  // Evaluations - Full backend
   async getEvaluations(params?: {
     limit?: number;
     offset?: number;
@@ -78,69 +85,39 @@ export const apiService = {
     start_date?: string;
     end_date?: string;
   }) {
-    // Minimal backend doesn't have list evaluations endpoint
-    // Return empty array for now
-    return [];
-  },
+    const queryParams = new URLSearchParams();
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.offset) queryParams.append('offset', params.offset.toString());
+    if (params?.agent_name) queryParams.append('agent_name', params.agent_name);
+    if (params?.hallucinated !== undefined) queryParams.append('hallucinated', params.hallucinated.toString());
+    if (params?.start_date) queryParams.append('start_date', params.start_date);
+    if (params?.end_date) queryParams.append('end_date', params.end_date);
 
-  async getEvaluationStats(days: number = 7, agent_name?: string) {
-    // Minimal backend uses /stats/{agent_id} with X-API-Key header
-    const storedKeys = localStorage.getItem('agentops_api_keys');
-    if (storedKeys) {
-      const keys = JSON.parse(storedKeys);
-      if (keys.length > 0) {
-        const agentId = keys[0].id;
-        const apiKey = keys[0].key;
-        
-        try {
-          const response = await apiClient.get(`/stats/${agentId}`, {
-            headers: { 'X-API-Key': apiKey }
-          });
-          
-          // Transform minimal backend response to expected format
-          const data = response.data;
-          return {
-            total_evaluations: data.total_evals || 0,
-            total_hallucinations: data.total_hallucinations || 0,
-            hallucination_rate: data.avg_hallucination_prob || 0,
-            avg_latency: data.avg_latency || 0,
-            avg_throughput: data.avg_throughput || 0,
-            avg_semantic_drift: 0,
-            avg_uncertainty: 0,
-            avg_factual_support: 0
-          };
-        } catch (err) {
-          console.error('Error fetching stats:', err);
-          // Return default stats on error
-        }
-      }
-    }
-    
-    // Return default stats if no agent or error
-    return {
-      total_evaluations: 0,
-      total_hallucinations: 0,
-      hallucination_rate: 0,
-      avg_latency: 0,
-      avg_throughput: 0,
-      avg_semantic_drift: 0,
-      avg_uncertainty: 0,
-      avg_factual_support: 0
-    };
-  },
-
-  // Upload metrics to GCP backend
-  async uploadMetrics(evaluation: any) {
-    const apiKey = localStorage.getItem('agentops_api_key');
-    const response = await apiClient.post('/metrics', evaluation, {
-      headers: { 'X-API-Key': apiKey }
-    });
+    const response = await apiClient.get(`/evaluations/?${queryParams.toString()}`);
     return response.data;
   },
 
-  // Get agent stats from GCP
-  async getAgentStats(agentId: string) {
-    const response = await apiClient.get(`/stats/${agentId}`);
+  async getEvaluationStats(days: number = 7, agent_name?: string) {
+    const queryParams = new URLSearchParams();
+    queryParams.append('days', days.toString());
+    if (agent_name) queryParams.append('agent_name', agent_name);
+
+    const response = await apiClient.get(`/evaluations/stats?${queryParams.toString()}`);
+    return response.data;
+  },
+
+  async createEvaluation(evaluation: any) {
+    const response = await apiClient.post('/evaluations/', evaluation);
+    return response.data;
+  },
+
+  async getEvaluation(id: string) {
+    const response = await apiClient.get(`/evaluations/${id}`);
+    return response.data;
+  },
+
+  async deleteEvaluation(id: string) {
+    const response = await apiClient.delete(`/evaluations/${id}`);
     return response.data;
   },
 

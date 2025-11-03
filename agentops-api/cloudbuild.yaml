@@ -9,7 +9,7 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/agentops-api:latest'
       - '-f'
-      - 'Dockerfile.production'
+      - 'Dockerfile'
       - '.'
 
   # Push the container image to Container Registry

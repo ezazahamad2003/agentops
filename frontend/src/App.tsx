@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
   },
 });
 
+// Protected route component - requires authentication
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
@@ -88,8 +89,8 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="App">
-            {/* Environment Setup Notice */}
-            {!process.env.REACT_APP_API_URL || process.env.REACT_APP_API_URL === 'http://localhost:8000' ? (
+            {/* Environment Setup Notice - Only show if API URL is not configured */}
+            {!process.env.REACT_APP_API_URL ? (
               <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
                 <div className="max-w-2xl w-full">
                   <EnvironmentSetup />

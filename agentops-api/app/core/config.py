@@ -25,10 +25,17 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=30, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
     
     # CORS
-    allowed_origins: List[str] = Field(
-        default=["http://localhost:3000", "http://localhost:8000"],
+    allowed_origins: str = Field(
+        default="http://localhost:3000,http://localhost:8000",
         alias="ALLOWED_ORIGINS"
     )
+    
+    @property
+    def allowed_origins_list(self) -> List[str]:
+        """Parse ALLOWED_ORIGINS as comma-separated list"""
+        if isinstance(self.allowed_origins, str):
+            return [origin.strip() for origin in self.allowed_origins.split(",")]
+        return self.allowed_origins
     
     # OpenAI (optional)
     openai_api_key: str = Field(default="", alias="OPENAI_API_KEY")

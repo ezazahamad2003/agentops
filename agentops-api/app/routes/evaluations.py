@@ -13,7 +13,7 @@ from ..models.evaluation import (
     BatchEvaluationRequest
 )
 from ..core.database import get_service_db
-from ..core.security import verify_api_key
+from ..core.security import verify_api_key, get_current_user
 
 router = APIRouter(prefix="/evaluations", tags=["evaluations"])
 
@@ -105,23 +105,23 @@ async def create_batch_evaluations(
 
 @router.get("/", response_model=List[EvaluationResponse])
 async def list_evaluations(
-    x_api_key: str = Header(..., description="Your AgentOps API key"),
     limit: int = Query(default=50, le=1000, description="Number of evaluations to return"),
     offset: int = Query(default=0, ge=0, description="Number of evaluations to skip"),
     agent_name: Optional[str] = Query(None, description="Filter by agent name"),
     hallucinated: Optional[bool] = Query(None, description="Filter by hallucination status"),
     start_date: Optional[datetime] = Query(None, description="Filter by start date"),
     end_date: Optional[datetime] = Query(None, description="Filter by end date"),
+    current_user: dict = Depends(get_current_user),
     db=Depends(get_service_db)
 ):
     """
-    List evaluations for the authenticated user
+    List evaluations for the authenticated user (JWT auth)
     
     Supports filtering by agent name, hallucination status, and date range.
     """
     try:
-        # Verify API key
-        user_info = await verify_api_key(x_api_key)
+        # Get user info from JWT
+        user_info = {"user_id": current_user["user_id"]}
         
         # Build query
         query = db.table("evaluations")\
@@ -154,19 +154,19 @@ async def list_evaluations(
 
 @router.get("/stats", response_model=EvaluationStats)
 async def get_evaluation_stats(
-    x_api_key: str = Header(..., description="Your AgentOps API key"),
     days: int = Query(default=7, le=365, description="Number of days to include in stats"),
     agent_name: Optional[str] = Query(None, description="Filter by agent name"),
+    current_user: dict = Depends(get_current_user),
     db=Depends(get_service_db)
 ):
     """
-    Get aggregated statistics for evaluations
+    Get aggregated statistics for evaluations (JWT auth)
     
     Returns metrics like hallucination rate, average latency, and throughput.
     """
     try:
-        # Verify API key
-        user_info = await verify_api_key(x_api_key)
+        # Get user info from JWT
+        user_info = {"user_id": current_user["user_id"]}
         
         # Calculate date threshold
         start_date = datetime.utcnow() - timedelta(days=days)

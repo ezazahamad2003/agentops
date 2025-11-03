@@ -35,6 +35,7 @@ const ApiKeys: React.FC = () => {
       const data = await apiService.getApiKeys();
       setApiKeys(data || []);
     } catch (err) {
+      console.error('Error fetching API keys:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch API keys');
     } finally {
       setLoading(false);
@@ -52,12 +53,6 @@ const ApiKeys: React.FC = () => {
       const response = await apiService.createApiKeys(newKeyName);
       setNewApiKey(response.key);
       setNewKeyName('');
-      
-      // Store in localStorage for minimal backend
-      const storedKeys = localStorage.getItem('agentops_api_keys');
-      const keys = storedKeys ? JSON.parse(storedKeys) : [];
-      keys.push(response);
-      localStorage.setItem('agentops_api_keys', JSON.stringify(keys));
       
       await fetchApiKeys();
     } catch (err) {
@@ -83,13 +78,7 @@ const ApiKeys: React.FC = () => {
     }
 
     try {
-      // For minimal backend, just remove from localStorage
-      const storedKeys = localStorage.getItem('agentops_api_keys');
-      if (storedKeys) {
-        const keys = JSON.parse(storedKeys);
-        const updatedKeys = keys.filter((k: any) => k.id !== keyId);
-        localStorage.setItem('agentops_api_keys', JSON.stringify(updatedKeys));
-      }
+      await apiService.deleteApiKey(keyId);
       await fetchApiKeys();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete API key');
@@ -165,7 +154,7 @@ const ApiKeys: React.FC = () => {
           <div className="space-y-4">
             {apiKeys.map((apiKey) => (
               <div key={apiKey.id} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-agentops-100 rounded-full flex items-center justify-center">
                       <Key className="w-5 h-5 text-agentops-600" />
@@ -206,6 +195,18 @@ const ApiKeys: React.FC = () => {
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
+                </div>
+                
+                {/* Show masked API key (security best practice) */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <code className="text-sm text-gray-700 font-mono flex-1">
+                      {apiKey.key}
+                    </code>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Full key is only shown once during creation
+                  </p>
                 </div>
               </div>
             ))}

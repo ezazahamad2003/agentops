@@ -189,14 +189,15 @@ class AgentOps:
         }
         
         try:
-            with httpx.Client(timeout=5.0) as client:
+            with httpx.Client(timeout=10.0) as client:
                 resp = client.post(
                     f"{self.api_url}/metrics",
                     json=payload,
                     headers={"X-API-Key": self.api_key}
                 )
                 resp.raise_for_status()
-                logger.debug(f"Uploaded evaluation {resp.json().get('eval_id')}")
+                result = resp.json()
+                logger.info(f"✅ Uploaded evaluation {result.get('eval_id')}")
         except httpx.HTTPError as e:
             logger.warning(f"API upload failed: {e}")
             raise

@@ -23,15 +23,13 @@ test_*.py
 *.swo
 
 # Documentation
-README.md
-DEPLOY.md
-QUICKSTART.md
-docs/
+*.md
 
 # Environment
 .env
 .env.local
 .env.*.local
+env.yaml
 
 # Git
 .git/
@@ -41,12 +39,6 @@ docs/
 build/
 dist/
 *.egg-info
-
-# Full backend (we're deploying minimal)
-app/
-main.py
-requirements.txt
-docker-compose.yml
 
 # Logs
 *.log

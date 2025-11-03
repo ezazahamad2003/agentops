@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User } from '../types';
+import apiService from '../services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -40,9 +41,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const token = localStorage.getItem('agentops_token');
       
       if (token) {
-        // TODO: Validate token with backend
-        const userData = JSON.parse(localStorage.getItem('agentops_user') || '{}');
-        setUser(userData);
+        // Validate token with backend by fetching user info
+        try {
+          const userData = await apiService.getCurrentUser();
+          setUser(userData);
+        } catch (err) {
+          // Token is invalid, clear it
+          console.error('Token validation failed:', err);
+          localStorage.removeItem('agentops_token');
+          localStorage.removeItem('agentops_user');
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
@@ -60,19 +69,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Temporary: Create a demo user for minimal backend
-      // TODO: Replace with actual backend auth when full version is deployed
-      const userData: User = {
-        id: email,
-        email: email,
-        full_name: email.split('@')[0],
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
+      // Call actual backend login API
+      const response = await apiService.login(email, password);
       
-      // Store demo token
-      localStorage.setItem('agentops_token', `demo_${Date.now()}`);
+      // Store JWT token
+      localStorage.setItem('agentops_token', response.access_token);
+      
+      // Fetch user data
+      const userData = await apiService.getCurrentUser();
       setUser(userData);
       localStorage.setItem('agentops_user', JSON.stringify(userData));
     } catch (err: any) {
@@ -89,8 +93,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setLoading(true);
       setError(null);
       
-      // Temporary: Just log in directly for minimal backend
-      // TODO: Replace with actual registration when full version is deployed
+      // Call actual backend registration API
+      await apiService.register(email, password, fullName);
+      
+      // Auto-login after successful registration
       await login(email, password);
     } catch (err: any) {
       const errorMessage = err?.response?.data?.detail || err?.message || 'Registration failed';

@@ -8,7 +8,7 @@ from datetime import datetime
 from loguru import logger
 import secrets
 
-from app.core.database import get_supabase
+from app.core.database import get_service_db
 from app.routes.auth import get_current_user
 
 router = APIRouter(prefix="/api-keys", tags=["api-keys"])
@@ -45,7 +45,7 @@ def generate_api_key() -> str:
 async def create_api_key(
     api_key_data: ApiKeyCreate,
     current_user: dict = Depends(get_current_user),
-    supabase = Depends(get_supabase)
+    supabase = Depends(get_service_db)
 ):
     """
     Create a new API key for the authenticated user
@@ -108,7 +108,7 @@ async def create_api_key(
 @router.get("/", response_model=List[ApiKeyListResponse])
 async def list_api_keys(
     current_user: dict = Depends(get_current_user),
-    supabase = Depends(get_supabase)
+    supabase = Depends(get_service_db)
 ):
     """
     List all API keys for the authenticated user
@@ -155,7 +155,7 @@ async def list_api_keys(
 async def delete_api_key(
     key_id: str,
     current_user: dict = Depends(get_current_user),
-    supabase = Depends(get_supabase)
+    supabase = Depends(get_service_db)
 ):
     """
     Delete (deactivate) an API key

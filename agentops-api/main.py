@@ -11,7 +11,7 @@ import sys
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.routes import evaluations, auth, health, api_keys
+from app.routes import evaluations, auth, health, api_keys, metrics
 
 
 # Configure logging
@@ -29,14 +29,14 @@ async def lifespan(app: FastAPI):
     Lifecycle events for the FastAPI application
     """
     # Startup
-    logger.info("🚀 Starting AgentOps API...")
+    logger.info("Starting AgentOps API...")
     logger.info(f"Environment: {settings.environment}")
     logger.info(f"Supabase URL: {settings.supabase_url}")
     
     yield
     
     # Shutdown
-    logger.info("👋 Shutting down AgentOps API...")
+    logger.info("Shutting down AgentOps API...")
 
 
 # Create FastAPI application
@@ -53,7 +53,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.allowed_origins,
+    allow_origins=settings.allowed_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -81,6 +81,7 @@ app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(api_keys.router)
 app.include_router(evaluations.router)
+app.include_router(metrics.router)  # SDK compatibility endpoint
 
 
 # Root endpoint
